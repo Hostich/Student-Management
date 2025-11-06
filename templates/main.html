@@ -1,0 +1,109 @@
+{% extends 'basepage.html'%}
+{% block content %}
+	
+	
+	<div class="w3-bar w3-container w3-white" style="position:sticky;top:0">
+		<button class='w3-button w3-green w3-right w3-padding' onclick="logout()">LOGOUT</button>
+		<h4>STUDENT MANAGEMENT v1.0</h4>
+		
+	</div>
+	<button class='w3-button w3-blue' onclick="modalcontrol('mymodal','block')">+ADD</button>
+	<br><br>
+	<table class='w3-table-all'>
+		<tr>
+					<th>IDNO</th>
+					<th class="w3-hide-small w3-hide-medium">LASTNAME</th>
+					<th class="w3-hide-small w3-hide-medium">FIRSTNAME</th>
+					<th class="w3-hide-large">NAME</th>
+					
+					<th class="w3-hide-small w3-hide-medium">COURSE</th>
+					<th class="w3-hide-small w3-hide-medium">LEVEL</th>
+					<th class="w3-hide-large">COURSE&LEVEL</th>
+					
+					<th>ACTION</th>
+		</tr>
+		{% for manage in managementlist %}
+				<tr>
+					<td>{{ manage['idno'] }}</td>
+					<td class="w3-hide-small w3-hide-medium">{{ manage['lastname'].upper() }}</td>
+					<td class="w3-hide-small w3-hide-medium">{{ manage['firstname'].upper() }}</td>
+					<td class="w3-hide-large">
+						{{ manage['lastname'].upper() }},{{ manage['firstname'].upper() }}
+					</td>
+					<td class="w3-hide-small w3-hide-medium">{{ manage['course'].upper() }}</td>
+					<td class="w3-hide-small w3-hide-medium">{{ manage['level'] }}</td>
+					<td class="w3-hide-large">
+						{{ manage['course'].upper() }}-{{ manage['level'] }}	
+					</td>
+					</td>
+					<td>
+						<button onclick="editstudent('{{ manage['id'] }}','{{ manage['idno'] }}','{{ manage['lastname'] }}','{{ manage['firstname'] }}','{{ manage['course'] }}','{{ manage['level'] }}')">&#128393;</button>
+						<button onclick="deletestudent({{ manage['id']}})">&#128465;</button>
+					</td>
+				</tr>
+				{% endfor%}
+	</table>
+	<div class="w3-modal" id="mymodal">
+		<div class="w3-modal-content w3-animate-top">
+			<div class="w3-container w3-blue">
+				<span onclick="closeModal()" class="w3-button w3-display-topright">&times;</span>
+				<h4>STUDENT INFORMATION</h4>
+				<button class='w3-button w3-display-topright' onclick="modalcontrol('mymodal','none')">&times;</button>
+			</div>
+			<div class='w3-container w3-padding'>
+			<fieldset>
+				<form action="/addstudent" method='post'>
+					<input type='hidden' name='type' id='type' value='add'>
+					<input type='hidden' name='id' id='id'>
+						<center>
+							<img src="{{ url_for('static',filename='images/account.png') }}">
+								<p>
+									<img id="preview" src="#" alt="Image preview" style="max-width:150px; display:none;">
+								</p>
+								<p>
+									<label><b>PROFILE IMAGE</b></label>
+									<input type="file" name="photo" id="photo" accept="image/*" class="w3-input w3-border" onchange="previewImage(event)">
+								</p>				
+						</center>
+						<p>
+							<label><b>IDNO</b></label>
+							<input type='number' name='idno' id='idno' class='w3-input w3-border'>
+						</p>
+						<p>
+							<label><b>LASTNAME</b></label>
+							<input type='text' name='lastname' id='lastname' class='w3-input w3-border'>
+						</p>
+						<p>
+							<label><b>FIRSTNAME</b></label>
+							<input type='text' name='firstname' id='firstname' class='w3-input w3-border'>
+						</p>
+						<p>
+							<label><b>COURSE</b></label>
+							<select name='course' id='course' class='w3-input w3-border'>
+								<option value='bscpe'>COMPUTER ENGINEERING</option>
+								<option value='bscs'>COMPUTER SCIENCE</option>
+								<option value='bsit'>INFORMATION TECHNOLOGY</option>
+								<option value='bshm'>HOSPITALITY MANAGEMENT</option>
+								<option value='bscj'>CRIMINAL JUSTICE</option>
+							</select>
+						</p>
+						<p>
+							<label><b>LEVEL</b></label>
+							<select name='level' id='level' class='w3-input w3-border'>
+								<option value='1'>FIRST YEAR</option>
+								<option value='2'>SECOND YEAR</option>
+								<option value='3'>THIRD YEAR</option>
+								<option value='4'>FOURTH YEAR</option>
+							</select>
+						</p>
+						<p class="w3-right">
+							<input type='submit' value='SAVE' class='w3-button w3-blue'>
+							<input type='reset' value='CANCEL' class='w3-button w3-green' onclick='cancelBtn()'>
+						</p>
+				</form>
+			  </fieldset>
+			</div>
+		</div>
+	</div>
+	
+{% endblock %}

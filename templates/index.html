@@ -1,0 +1,94 @@
+{% extends 'basepage.html' %}
+{% block content %}
+	<div class="w3-row-padding">
+		<div class="w3-third">
+			<div class="w3-card-4 w3-container w3-padding-16">
+				<fieldset>
+					<legend><b>STUDENT INFORMATION</b></legend>
+					<form  action="/addstudent" method='post' enctype="multipart/form-data">
+							<input type="hidden" name="id" id="id">
+							<input type="hidden" name="type" id="type" value="add">
+						<center>
+							<img id='preview' src="{{ url_for('static',filename='images/account.png') }}" with="100", height="100">
+							<p>
+								<label for="photo" class="custom-upload">Upload Photo</label>
+								<input type="file" name="photo" id="photo" accept="image/*" onchange="previewImage(event)">
+							</p>
+						</center>
+						<p>
+							<label><b>IDNO</b></label>
+							<input type='number' name='idno' id='idno' class='w3-input w3-border'>
+						</p>
+						<p>
+							<label><b>LASTNAME</b></label>
+							<input type='text' name='lastname' id='lastname' class='w3-input w3-border'>
+						</p>
+						<p>
+							<label><b>FIRSTNAME</b></label>
+							<input type='text' name='firstname' id='firstname' class='w3-input w3-border'>
+						</p>
+						<p>
+							<label><b>COURSE</b></label>
+							<select name='course' id='course' class='w3-input w3-border'>
+								<option value='bscpe'>COMPUTER ENGINEERING</option>
+								<option value='bscs'>COMPUTER SCIENCE</option>
+								<option value='bsit'>INFORMATION TECHNOLOGY</option>
+								<option value='bshm'>HOSPITALITY MANAGEMENT</option>
+								<option value='bscj'>CRIMINAL JUSTICE</option>
+							</select>
+						</p>
+						<p>
+							<label><b>LEVEL</b></label>
+							<select name='level' id='level' class='w3-input w3-border'>
+								<option value='1'>FIRST YEAR</option>
+								<option value='2'>SECOND YEAR</option>
+								<option value='3'>THIRD YEAR</option>
+								<option value='4'>FOURTH YEAR</option>
+							</select>
+						</p>
+						<p class="w3-right">
+							<input type='submit' value='SAVE' class='w3-button w3-blue'>
+							<input type='reset' value='CANCEL' class='w3-button w3-green' onclick='resetForm()'>
+						</p>
+					</form>
+				</fieldset>
+			</div>
+		</div>
+		<div class="w3-twothird">
+			<table class="w3-table-all w3-card-4">
+				<tr>
+					<th>IDNO</th>
+					<th class="w3-hide-small w3-hide-medium">LASTNAME</th>
+					<th class="w3-hide-small w3-hide-medium">FIRSTNAME</th>
+					<th class="w3-hide-large">NAME</th>
+					
+					<th class="w3-hide-small w3-hide-medium">COURSE</th>
+					<th class="w3-hide-small w3-hide-medium">LEVEL</th>
+					<th class="w3-hide-large">COURSE&LEVEL</th>
+					
+					<th>ACTION</th>
+				</tr>
+				{% for student in studentslist %}
+				<tr>
+					<td>{{ student['idno'] }}</td>
+					<td class="w3-hide-small w3-hide-medium">{{ student['lastname'].upper() }}</td>
+					<td class="w3-hide-small w3-hide-medium">{{ student['firstname'].upper() }}</td>
+					<td class="w3-hide-large">
+						{{ student['lastname'].upper() }},{{ student['firstname'].upper() }}
+					</td>
+					<td class="w3-hide-small w3-hide-medium">{{ student['course'].upper() }}</td>
+					<td class="w3-hide-small w3-hide-medium">{{ student['level'] }}</td>
+					<td class="w3-hide-large">
+						{{ student['course'].upper() }}-{{ student['level'] }}
+					</td>
+					<td>
+						<button onclick="editstudent('{{student['id']}}', '{{student['idno']}}', '{{student['lastname']}}', '{{student['firstname']}}', '{{student['course']}}', '{{student['level']}}','{{student['image']}}')">&#128393;</button>
+						<button onclick="deletestudent({{ student['id'] }})">&#128465;</button>
+					</td>
+				</tr>
+				{% endfor%}
+			</table>
+		</div>
+	</div>
+	
+{% endblock %}
