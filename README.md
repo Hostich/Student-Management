@@ -1,2 +1,2 @@
 In making this first you enter venv then download flask 
-for the image to work just make a folder name uploads inside the static folder 
+go to static folder then make a another folder name uploads 
